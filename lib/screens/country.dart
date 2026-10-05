@@ -16,7 +16,7 @@ class _CountryScreen extends ConsumerState<CountryScreen>{
   Widget build(BuildContext context) {
     final state = ref.watch(countryProvider);
     final continents= ['All',...state.countries.map((c)=>c.continent).toSet()];
-    final filtered = selectedContinent =='All'?state.countries:state.countries.where((c)=>c.continent==selectedContinent).toList();
+    final filtered  = selectedContinent=='All'?state.countries : state.countries.where((c)=>c.continent == selectedContinent).toList();
   if(state.errorMessage!=null){
       return Scaffold(
         appBar: AppBar(

@@ -3,58 +3,61 @@ import 'package:countries_api/models/country.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+
 class CountryRepository  {
   final Dio _dio = Dio(BaseOptions(
-    baseUrl: 'https://api.restcountries.com/countries/v5',
-    headers: {
-      'Authorization' :'Bearer ${dotenv.env['API_KEY']}',
-      'Content-Type':'application/json'
-    }
+      baseUrl: 'https://api.restcountries.com/countries/v5',
+      headers: {
+        'Authorization' :'Bearer ${dotenv.env['API_KEY']}',
+        'Content-Type':'application/json'
+      }
   ));
+
   Future<List<Country>> fetchAllCountries() async {
     try {
       const int limit = 100;
       int offset = 0;
       final List<Country> countries = [];
+      const excluded = {
+        'Northern Cyprus',
+        'Abkhazia',
+        'Israel',
+        'Somaliland',
+        'South Ossetia',
+      };
       while (true) {
+        print('1 - starting request offset: $offset');
+
         final response = await _dio.get(
           '',
-          queryParameters: {
-            'limit': limit,
-            'offset': offset,
-          },
+          queryParameters: {'limit': limit, 'offset': offset},
         );
-        if (response.statusCode != 200) {
-          throw Exception(
-            'Request failed: ${response.statusCode} ${response.statusMessage}',
-          );
-        }
+        print('2 - got response');
+
         final List<dynamic> rawData =
         response.data['data']['objects'] as List<dynamic>;
-        final int fetchedCount = rawData.length;
-       rawData.removeWhere(
-              (country) => country['names']['common'] == 'Northern Cyprus',
-        );
+        print(rawData.first.keys);
+        print('3 - rawData length: ${rawData.length}');
+
         rawData.removeWhere(
-              (country) => country['names']['common'] == 'Abkhazia',
+              (country) => excluded.contains(country['names']['common']),
         );
-        rawData.removeWhere(
-              (country) => country['names']['common'] == 'Israel',
-        );
-        rawData.removeWhere(
-              (country) => country['names']['common'] == 'Somaliland',
-        );
-        rawData.removeWhere(
-              (country) => country['names']['common'] == 'South Ossetia',
-        );
-        countries.addAll(
-          rawData
-              .map((item) => Country.fromJson(item as Map<String, dynamic>))
-              .toList(),
-        );
-        if (fetchedCount < limit) {
-          break;
+        print('4 - after filter');
+
+        for (final item in rawData) {
+          try {
+            countries.add(Country.fromJson(item as Map<String, dynamic>));
+          } catch (e) {
+
+
+          }
         }
+        print('5 - after addAll');
+
+        final meta = response.data['data']['meta'];
+        print('6 - meta: $meta');
+        final bool hasMore = meta['more'] as bool;
+        if (!hasMore) break;
         offset += limit;
       }
       return countries;
@@ -65,5 +68,6 @@ class CountryRepository  {
     } catch (e) {
       throw Exception('Something went wrong: $e');
     }
-  }
+
+ }
 }

@@ -30,18 +30,17 @@ class QuizState {
 }
 
 class QuizProvider extends StateNotifier<QuizState> {
-  QuizProvider() : super(QuizState());
-
-  QuizState startQuiz( List<Country> countries , String type){
-    final questions =generateQuestions(countries , type);
-   return state = QuizState(questions: questions);
+  QuizProvider(): super(QuizState());
+  QuizState startQuiz(List<Country> countries , String type){
+    final questions = generateQuestions(countries, type);
+    return state = QuizState(questions: questions);
   }
-  void answerQuestion(String answer){
-      state = state.copyWith(answered: true,score:answer == state.questions[state.currentIndex].correctAnswer? state.score + 1 : state.score );
+  void answerQuestion(String answer) {
+    state = state.copyWith(answered: true , score: answer ==  state.questions[state.currentIndex].correctAnswer? state.score+1 : state.score);
   }
   void nextQuestion(){
-    state = state.copyWith(currentIndex: state.currentIndex + 1 , answered: false);
+    state = state.copyWith(score: state.currentIndex+1 , answered: false);
   }
 }final quizProvider = StateNotifierProvider<QuizProvider , QuizState>(
-    (ref) =>QuizProvider()
+        (ref)=> QuizProvider()
 );

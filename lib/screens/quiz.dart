@@ -1,13 +1,10 @@
-
 import 'package:countries_api/models/country.dart';
 import 'package:countries_api/providers/country.dart';
 import 'package:countries_api/providers/quiz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 class QuizScreen extends ConsumerStatefulWidget {
-
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _QuizScreen();
 
@@ -32,7 +29,6 @@ void _showQuizTypeDialog(){
               const SizedBox(width: 15,),
               Icon(Icons.flag)
             ],),
-
           ),
           SimpleDialogOption(
             onPressed: () {
@@ -70,7 +66,6 @@ void _showQuizTypeDialog(){
               ],)
 
           ),
-
         ],
       ));
 }
@@ -91,7 +86,6 @@ void _showQuizTypeDialog(){
           Center(child:
           ElevatedButton(
             onPressed: () {
-
               _showQuizTypeDialog();
             },
             child: Text('Start' , style: TextStyle(fontSize: 20),),
