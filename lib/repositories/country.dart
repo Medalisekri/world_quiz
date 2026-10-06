@@ -2,8 +2,6 @@
 import 'package:countries_api/models/country.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-
-
 class CountryRepository  {
   final Dio _dio = Dio(BaseOptions(
       baseUrl: 'https://api.restcountries.com/countries/v5',
@@ -26,36 +24,23 @@ class CountryRepository  {
         'South Ossetia',
       };
       while (true) {
-        print('1 - starting request offset: $offset');
-
         final response = await _dio.get(
           '',
           queryParameters: {'limit': limit, 'offset': offset},
         );
-        print('2 - got response');
-
         final List<dynamic> rawData =
         response.data['data']['objects'] as List<dynamic>;
-        print(rawData.first.keys);
-        print('3 - rawData length: ${rawData.length}');
-
         rawData.removeWhere(
               (country) => excluded.contains(country['names']['common']),
         );
-        print('4 - after filter');
-
         for (final item in rawData) {
           try {
             countries.add(Country.fromJson(item as Map<String, dynamic>));
           } catch (e) {
-
-
+            throw Exception('Something went wrong: $e ');
           }
         }
-        print('5 - after addAll');
-
         final meta = response.data['data']['meta'];
-        print('6 - meta: $meta');
         final bool hasMore = meta['more'] as bool;
         if (!hasMore) break;
         offset += limit;

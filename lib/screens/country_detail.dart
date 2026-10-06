@@ -1,72 +1,81 @@
 import 'package:countries_api/models/country.dart';
 import 'package:flutter/material.dart';
+
 class CountryDetailScreen extends StatelessWidget {
   final Country? country;
   const CountryDetailScreen({super.key, this.country});
+
   @override
   Widget build(BuildContext context) {
+    if (country == null) return const Scaffold();
+
+    final primaryColor = Theme.of(context).colorScheme.primary;
+    final surfaceColor = Theme.of(context).colorScheme.surface;
     return Scaffold(
-        appBar: AppBar(
-          title: Text('WorldQuiz'),
-          backgroundColor: Colors.blue,
-          foregroundColor: Colors.black,
-          centerTitle: true,
+      appBar: AppBar(title: const Text('WorldQuiz')),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Image.network(
+              country!.flagUrl,
+              height: 220,
+              fit: BoxFit.cover,
+              errorBuilder: (_, __, ___) => Container(height: 220, color: surfaceColor, child: const Icon(Icons.flag, size: 80)),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(country!.name, style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: primaryColor)),
+                  const SizedBox(height: 24),
+                  Container(
+                    padding: const EdgeInsets.all(24),
+                    decoration: BoxDecoration(
+                      color: surfaceColor,
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: primaryColor.withOpacity(0.2)),
+                      boxShadow: [
+                        BoxShadow(color: primaryColor.withOpacity(0.05), blurRadius: 10, spreadRadius: 2)
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildDetailRow(context, 'Capital', country!.capital),
+                        const SizedBox(height: 16),
+                        _buildDetailRow(context, 'Continent', country!.continent),
+                        const SizedBox(height: 16),
+                        _buildDetailRow(context, 'Population', country!.population.toString()),
+                        const SizedBox(height: 16),
+                        _buildDetailRow(context, 'Languages', country!.languages.join(', ')),
+                        const SizedBox(height: 16),
+                        _buildDetailRow(context, 'Currencies', country!.currencies.join(', ')),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
-        body:
-            SingleChildScrollView(child:
-            Center(child:
-                Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.network(
-                        country!.flagUrl,
-                        height: 200,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stack) => Icon(Icons.flag, size: 80),
-                      ),
-                  const SizedBox(height: 15,),
-                  Text('Country Detail' ,
-                      style: TextStyle(fontSize: 22 , fontWeight: FontWeight.bold , )),
-                const SizedBox(height: 15,),
-                Text(country!.name ,
-                  style: TextStyle(fontSize: 16 ,fontWeight: FontWeight.bold),),
-                     Container(
-                 padding: EdgeInsets.all(40),
-                 margin: EdgeInsets.all(10),
-                 decoration: BoxDecoration(
-                   border: Border.all(color:Colors.blue.withValues(alpha: 0.7)),
-                     borderRadius: BorderRadius.circular(20),
-                     gradient: LinearGradient(
-                         begin : Alignment.topLeft,
-                         end: Alignment.bottomRight,
-                         colors: [Colors.white54 , Colors.blueAccent.withValues(alpha: 0.4)
-                           , Colors.white12.withValues(alpha: 0.4)] )
-                        ),
-                         child:
-                           Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                          children: [
-                              Text( 'Capital: ${country?.capital}' ,
-                                style: TextStyle(fontWeight: FontWeight.bold ,fontSize: 20),),
-                              const SizedBox(height: 10),
-                              Text('Continent: ${country?.continent}',
-                                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
-                              const SizedBox(height: 10),
-                              Text('Languages: ${country?.languages.join(', ')}',softWrap: true,
-                                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
-                              const SizedBox(height: 10),
-                              Text('Currencies: ${country?.currencies.join(', ')}',softWrap: true,
-                                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
-                              const SizedBox(height: 10),
-                              Text('Population: ${country?.population}',
-                                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
-                        ]) )
-             ])))) ;
+      ),
+    );
+  }
+
+  Widget _buildDetailRow(BuildContext context, String title, String value) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          width: 100,
+          child: Text(title, style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary)),
+        ),
+        Expanded(
+          child: Text(value, style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontWeight: FontWeight.w500)),
+        ),
+      ],
+    );
   }
 }
-
-
-
-

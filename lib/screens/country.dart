@@ -1,111 +1,130 @@
 import 'package:countries_api/providers/country.dart';
-import 'package:countries_api/providers/quiz.dart';
 import 'package:countries_api/screens/country_detail.dart';
-import 'package:countries_api/screens/quiz.dart';
+import 'package:countries_api/screens/quiz_config.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../providers/theme.dart';
+
 class CountryScreen extends ConsumerStatefulWidget {
+  const CountryScreen({super.key});
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _CountryScreen();
+  ConsumerState<CountryScreen> createState() => _CountryScreenState();
 }
-class _CountryScreen extends ConsumerState<CountryScreen>{
-  var selectedContinent ='All';
+
+class _CountryScreenState extends ConsumerState<CountryScreen> {
+  String selectedContinent = 'All';
+
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(countryProvider);
-    final continents= ['All',...state.countries.map((c)=>c.continent).toSet()];
-    final filtered  = selectedContinent=='All'?state.countries : state.countries.where((c)=>c.continent == selectedContinent).toList();
-  if(state.errorMessage!=null){
-      return Scaffold(
-        appBar: AppBar(
+    final countriesState = ref.watch(countryProvider);
+    final themeMode = ref.watch(themeProvider);
+    final primaryColor = Theme.of(context).colorScheme.primary;
+    final surfaceColor = Theme.of(context).colorScheme.surface;
+    final textColor = Theme.of(context).colorScheme.onSurface;
 
-            title: Text('WorldQuiz'),
-            backgroundColor: Colors.blue,
-            foregroundColor: Colors.white,
-          ),
-
-        body:SafeArea(
-            child: Center(child: Text(state.errorMessage! ,
-              style: TextStyle(color: Colors.red ,fontSize: 25), )
-      )));
+    if (countriesState.isLoading) {
+      return Scaffold(body: Center(child: CircularProgressIndicator(color: primaryColor)));
     }
+
+    if (countriesState.hasError) {
+      return Scaffold(
+        appBar: AppBar(title: const Text('WorldQuiz')),
+        body: Center(
+          child: Text(countriesState.error.toString(), style: TextStyle(color: Theme.of(context).colorScheme.error, fontSize: 18)),
+        ),
+      );
+    }
+
+    final countries = countriesState.value ?? [];
+    final continents = ['All', ...countries.map((c) => c.continent).toSet()];
+    final filtered = selectedContinent == 'All' ? countries : countries.where((c) => c.continent == selectedContinent).toList();
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('WorldQuiz'),
-        backgroundColor: Colors.blue,
-        foregroundColor: Colors.black,
-        centerTitle: true,
+        title: const Text('WorldQuiz'),
+        actions: [
+          IconButton(
+            icon: Icon(themeMode == ThemeMode.dark ? Icons.light_mode : Icons.dark_mode),
+            onPressed: () => ref.read(themeProvider.notifier).toggleTheme(),
+          ),
+          const SizedBox(width: 8),
+        ],
       ),
-      body:
-    SafeArea(child:
-      Container(
-        height: double.infinity,
-        width: double.infinity,
-        decoration: BoxDecoration(
-        ),
-        child:Column(children: [
-          Container(
-            padding: EdgeInsets.all(20),
-              margin: EdgeInsets.all(15),
-              decoration: BoxDecoration(
-                color: Colors.blueAccent.withValues(alpha: 0.7),
-                border: Border.all(color: Colors.black),
-                borderRadius: BorderRadius.circular(15)
-              ),
-              child:
-              SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child:
-              Row(
-                spacing: 20,
-            children: [
-              for(String cou in continents)
-                GestureDetector(
-                  onTap: (){
-                    setState(() =>selectedContinent =cou
-                    );
-                  },
-                  child: Text(cou , style:TextStyle(color:selectedContinent ==cou? Colors.white : Colors.black)),
-                )
-            ],
-          ))) ,
-        Expanded(
-    child:
-        ListView.builder(
-            itemCount: filtered.length,
-            itemBuilder: (context , index){
-              return GestureDetector(
-                onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>CountryDetailScreen(country:filtered[index])));
+      body: SafeArea(
+        child: Column(
+          children: [
+            // Continent Filter Pills
+            Container(
+              height: 50,
+              margin: const EdgeInsets.symmetric(vertical: 16),
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: continents.length,
+                itemBuilder: (context, index) {
+                  final cont = continents[index];
+                  final isSelected = selectedContinent == cont;
+                  return GestureDetector(
+                    onTap: () => setState(() => selectedContinent = cont),
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      margin: const EdgeInsets.symmetric(horizontal: 8),
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      decoration: BoxDecoration(
+                        color: isSelected ? primaryColor.withOpacity(0.15) : surfaceColor,
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(color: isSelected ? primaryColor : Colors.transparent),
+                      ),
+                      child: Center(
+                        child: Text(
+                          cont,
+                          style: TextStyle(
+                            color: isSelected ? primaryColor : textColor.withOpacity(0.7),
+                            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
                 },
-                  child:
-             Card(
-                color: Colors.blue.withValues(alpha: 0.6),
-                  shadowColor: Colors.black.withValues(alpha: 0.8),
-                  elevation: 10,
-                 margin: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                  child:
-               ListTile(
-                leading:
-                Image.network(
-                  filtered[index].flagUrl,
-                  width: 75,
-                  height: 75,
-                  errorBuilder: (context, error, stack) =>
-                      Icon(Icons.flag, size: 40),
-                ),
-                title: Text(filtered[index].name),
-              )));
-            }),
-        )])),
-    ),
-
-    floatingActionButton: FloatingActionButton.extended(onPressed: (){
-      Navigator.push(context, MaterialPageRoute(builder: (context)=>QuizScreen()));
- } ,  label: Text('Quiz'),
-      icon: Icon(Icons.quiz),),
+              ),
+            ),
+            // Country List
+            Expanded(
+              child: ListView.builder(
+                itemCount: filtered.length,
+                itemBuilder: (context, index) {
+                  final country = filtered[index];
+                  return Card(
+                    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    elevation: 4,
+                    child: ListTile(
+                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => CountryDetailScreen(country: country))),
+                      leading: ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.network(
+                          country.flagUrl,
+                          width: 50,
+                          height: 35,
+                          fit: BoxFit.cover,
+                          errorBuilder: (_, __, ___) => const Icon(Icons.flag),
+                        ),
+                      ),
+                      title: Text(country.name, style: const TextStyle(fontWeight: FontWeight.w600)),
+                      trailing: Icon(Icons.chevron_right, color: textColor.withOpacity(0.5)),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => Navigator.push(context , MaterialPageRoute(builder: (_)=>QuizConfigScreen())),
+        label: const Text('Quiz'),
+        icon: const Icon(Icons.quiz),
+      ),
     );
   }
-  }
+}
