@@ -1,18 +1,20 @@
 import 'package:countries_api/models/country.dart';
+import 'package:countries_api/providers/locale_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CountryDetailScreen extends StatelessWidget {
+class CountryDetailScreen extends ConsumerWidget {
   final Country? country;
   const CountryDetailScreen({super.key, this.country});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context , WidgetRef ref) {
     if (country == null) return const Scaffold();
-
+     final tr = ref.watch(trProvider);
     final primaryColor = Theme.of(context).colorScheme.primary;
     final surfaceColor = Theme.of(context).colorScheme.surface;
     return Scaffold(
-      appBar: AppBar(title: const Text('WorldQuiz')),
+      appBar: AppBar(title: Text(tr('country_detail'))),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -43,15 +45,15 @@ class CountryDetailScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _buildDetailRow(context, 'Capital', country!.capital),
+                        _buildDetailRow(context, tr('capital'), country!.capital),
                         const SizedBox(height: 16),
-                        _buildDetailRow(context, 'Continent', country!.continent),
+                        _buildDetailRow(context, tr('continent'), country!.continent),
                         const SizedBox(height: 16),
-                        _buildDetailRow(context, 'Population', country!.population.toString()),
+                        _buildDetailRow(context, tr('population'), country!.population.toString()),
                         const SizedBox(height: 16),
-                        _buildDetailRow(context, 'Languages', country!.languages.join(', ')),
+                        _buildDetailRow(context, tr('languages'), country!.languages.join(', ')),
                         const SizedBox(height: 16),
-                        _buildDetailRow(context, 'Currencies', country!.currencies.join(', ')),
+                        _buildDetailRow(context, tr('currencies'), country!.currencies.join(', ')),
                       ],
                     ),
                   ),

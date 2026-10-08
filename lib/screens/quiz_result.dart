@@ -5,6 +5,8 @@ import 'package:countries_api/screens/quiz_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../providers/locale_provider.dart';
+
 class QuizResultScreen extends ConsumerStatefulWidget {
   const QuizResultScreen({super.key});
   @override
@@ -37,18 +39,18 @@ class _QuizResultScreenState extends ConsumerState<QuizResultScreen> {
   Widget build(BuildContext context) {
     final state = ref.watch(quizProvider);
     final percentage = (state.score / state.questions.length) * 100;
-
+    final tr = ref.watch(trProvider);
     // Determine message and color based on score
     String message;
     Color accentColor;
     if (percentage >= 80) {
-      message = "Genius! 🧠";
+      message = tr("genius! 🧠");
       accentColor = AppTheme.neonGreen;
     } else if (percentage >= 50) {
-      message = "Good Job! 👍";
+      message = tr("good_job! 👍");
       accentColor = AppTheme.neonBlue;
     } else {
-      message = "Keep Practicing! 💪";
+      message = tr("keep_practicing! 💪");
       accentColor = AppTheme.neonRed;
     }
 
@@ -83,7 +85,7 @@ class _QuizResultScreenState extends ConsumerState<QuizResultScreen> {
                     children: [
                       const Icon(Icons.local_fire_department, color: Colors.orange, size: 24),
                       const SizedBox(width: 8),
-                      Text('Max Streak: ${state.maxStreak}', style: const TextStyle(fontSize: 18, color: Colors.orange)),
+                      Text('${tr('max_streak')}: ${state.maxStreak}', style: const TextStyle(fontSize: 18, color: Colors.orange)),
                     ],
                   ),
                 const SizedBox(height: 60),
@@ -93,12 +95,12 @@ class _QuizResultScreenState extends ConsumerState<QuizResultScreen> {
                     ref.read(quizProvider.notifier).startQuiz([], 'easy', 'All'); // Quick reset
                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => QuizConfigScreen()));
                   },
-                  child: const Text('PLAY AGAIN'),
+                  child: Text(tr('play_again')),
                 ),
                 const SizedBox(height: 16),
                 TextButton(
                   onPressed: () => Navigator.popUntil(context, (route) => route.isFirst),
-                  child: const Text('Back to Home', style: TextStyle(color: Colors.blueAccent)),
+                  child: Text(tr('back_to_home'), style: const TextStyle(color: Colors.blueAccent)),
                 ),
               ],
             ),

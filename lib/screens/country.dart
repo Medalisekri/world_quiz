@@ -1,4 +1,5 @@
 import 'package:countries_api/providers/country.dart';
+import 'package:countries_api/providers/locale_provider.dart';
 import 'package:countries_api/screens/country_detail.dart';
 import 'package:countries_api/screens/quiz_config.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,7 @@ class _CountryScreenState extends ConsumerState<CountryScreen> {
   Widget build(BuildContext context) {
     final countriesState = ref.watch(countryProvider);
     final themeMode = ref.watch(themeProvider);
+    final tr = ref.watch(trProvider);
     final primaryColor = Theme.of(context).colorScheme.primary;
     final surfaceColor = Theme.of(context).colorScheme.surface;
     final textColor = Theme.of(context).colorScheme.onSurface;
@@ -29,7 +31,7 @@ class _CountryScreenState extends ConsumerState<CountryScreen> {
 
     if (countriesState.hasError) {
       return Scaffold(
-        appBar: AppBar(title: const Text('WorldQuiz')),
+        appBar: AppBar(title: Text(tr('app_title'))),
         body: Center(
           child: Text(countriesState.error.toString(), style: TextStyle(color: Theme.of(context).colorScheme.error, fontSize: 18)),
         ),
@@ -42,11 +44,17 @@ class _CountryScreenState extends ConsumerState<CountryScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('WorldQuiz'),
+        title: Text(tr('app_title')),
         actions: [
           IconButton(
             icon: Icon(themeMode == ThemeMode.dark ? Icons.light_mode : Icons.dark_mode),
             onPressed: () => ref.read(themeProvider.notifier).toggleTheme(),
+          ),
+          IconButton(
+            icon: const Icon(Icons.translate),
+            onPressed: () {
+              ref.read(localeProvider.notifier).toggleLocale();
+            },
           ),
           const SizedBox(width: 8),
         ],
@@ -122,7 +130,7 @@ class _CountryScreenState extends ConsumerState<CountryScreen> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => Navigator.push(context , MaterialPageRoute(builder: (_)=>QuizConfigScreen())),
-        label: const Text('Quiz'),
+        label: Text(tr('quiz')),
         icon: const Icon(Icons.quiz),
       ),
     );

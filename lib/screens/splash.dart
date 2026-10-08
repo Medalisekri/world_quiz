@@ -3,6 +3,8 @@ import 'package:countries_api/screens/country.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../providers/locale_provider.dart';
+
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
   @override
@@ -19,7 +21,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     });
 
     final state = ref.watch(countryProvider);
-
+    final tr = ref.watch(trProvider);
     return Scaffold(
       body: Center(
         child: Column(
@@ -37,7 +39,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
             ),
             const SizedBox(height: 32),
             if (state.hasError)
-              Text('Failed to load countries', style: TextStyle(color: Theme.of(context).colorScheme.error))
+              Text(tr('error'), style: TextStyle(color: Theme.of(context).colorScheme.error))
             else
               CircularProgressIndicator(color: Theme.of(context).colorScheme.primary),
           ],

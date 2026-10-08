@@ -1,4 +1,4 @@
-import 'dart:math' as math; // ADDED for shake animation
+import 'dart:math' as math;
 import 'package:countries_api/core/theme/app_theme.dart';
 import 'package:countries_api/providers/quiz.dart';
 import 'package:countries_api/screens/quiz_result.dart';
@@ -72,7 +72,7 @@ class _QuizPlayScreenState extends ConsumerState<QuizPlayScreen> with SingleTick
       ),
       body: Column(
         children: [
-          // Smooth Timer Bar (Simplified for better performance)
+          // Smooth Timer Bar
           Builder(
             builder: (context) {
               final percentage = state.timeLeft / 12.0;
@@ -82,7 +82,7 @@ class _QuizPlayScreenState extends ConsumerState<QuizPlayScreen> with SingleTick
                 width: double.infinity,
                 color: AppTheme.darkSurface,
                 child: FractionallySizedBox(
-                  alignment: Alignment.centerLeft,
+                  alignment: AlignmentDirectional.centerStart,
                   widthFactor: percentage.clamp(0.0, 1.0),
                   child: Container(
                     decoration: BoxDecoration(

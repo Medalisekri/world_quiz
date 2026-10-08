@@ -5,6 +5,8 @@ import 'package:countries_api/screens/quiz_play.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../providers/locale_provider.dart';
+
 class QuizConfigScreen extends ConsumerStatefulWidget {
   @override
   ConsumerState<QuizConfigScreen> createState() => _QuizConfigScreenState();
@@ -19,15 +21,15 @@ class _QuizConfigScreenState extends ConsumerState<QuizConfigScreen> {
     final countriesState = ref.watch(countryProvider);
     final continents = ['All', ...countriesState.value?.map((c) => c.continent).toSet() ??
         {}];
-
+    final tr = ref.watch(trProvider);
     return Scaffold(
-      appBar: AppBar(title: const Text('Quiz Setup')),
+      appBar: AppBar(title: Text(tr('quiz_setup'))),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildSectionTitle('Difficulty'),
+            _buildSectionTitle(tr('difficulty')),
             const SizedBox(height: 16),
             Row(
               children: ['easy', 'medium', 'hard'].map((diff) {
@@ -50,7 +52,7 @@ class _QuizConfigScreenState extends ConsumerState<QuizConfigScreen> {
                       ),
                       child: Center(
                         child: Text(
-                          diff.toUpperCase(),
+                          tr(diff),
                           style: TextStyle(
                             color: isSelected ? AppTheme.neonWhite : Colors.white70,
                             fontWeight: FontWeight.bold,
@@ -64,7 +66,7 @@ class _QuizConfigScreenState extends ConsumerState<QuizConfigScreen> {
               }).toList(),
             ),
             const SizedBox(height: 32),
-            _buildSectionTitle('Continent'),
+            _buildSectionTitle(tr('continent')),
             const SizedBox(height: 16),
             Expanded(
               child: GridView.builder(
@@ -107,7 +109,7 @@ class _QuizConfigScreenState extends ConsumerState<QuizConfigScreen> {
                   ref.read(quizProvider.notifier).startQuiz(countries, _selectedDifficulty, _selectedContinent);
                   Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const QuizPlayScreen()));
                 },
-                child: const Text('START QUIZ'),
+                child: Text(tr('start_quiz')),
               ),
             ),
           ],

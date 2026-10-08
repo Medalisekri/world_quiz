@@ -42,7 +42,6 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   confetti: ^0.7.0
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -80,6 +79,8 @@ flutter:
   assets:
     - .env
     - lib/core/assets/images/earth.jpg
+
+
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
