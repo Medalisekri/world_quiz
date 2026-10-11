@@ -35,17 +35,5 @@ class CacheRepository {
     await box.put('countries_data', data);
   }
 
-  Future<List<dynamic>> getQuizHistory() async {
-    final box = await _getSafeBox(_historyBoxName);
-    final history = box.get('quiz_history', defaultValue: []);
-    return history.map((e) => Map<String, dynamic>.from(e as Map)).toList();
-  }
 
-  Future<void> saveQuizResult(Map<String, dynamic> result) async {
-    final box = await _getSafeBox(_historyBoxName);
-    final history = await getQuizHistory();
-    history.insert(0, result);
-    if (history.length > 5) history.removeLast();
-    await box.put('quiz_history', history);
-  }
 }

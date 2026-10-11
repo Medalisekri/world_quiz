@@ -127,14 +127,6 @@ class QuizProvider extends StateNotifier<QuizState> {
 
   Future<void> _finishQuiz() async {
     _timer?.cancel();
-    await _cache.saveQuizResult({
-      'date': DateTime.now().toIso8601String(),
-      'score': state.score,
-      'total': state.questions.length,
-      'difficulty': state.difficulty,
-      'continent': state.continent,
-      'maxStreak': state.maxStreak,
-    });
     state = state.copyWith(isFinished: true);
   }
 
