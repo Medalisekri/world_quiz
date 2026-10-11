@@ -35,7 +35,10 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
               ),
             ),
             const SizedBox(height: 32),
-              CircularProgressIndicator(color: Theme.of(context).colorScheme.primary),
+               if(state.hasError)
+               Text(tr('error')  ,style: TextStyle(color: Colors.red , fontSize: 15),)
+                else
+                CircularProgressIndicator(color: Theme.of(context).colorScheme.primary),
           ],
         ),
       ),
