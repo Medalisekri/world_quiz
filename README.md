@@ -170,7 +170,24 @@ dependencies:
   latlong2: ^0.9.1
   cached_network_image: ^3.3.1
 ```
+---
 
+## Testing
+
+The project includes **30 tests** across 6 test files covering model parsing, localization, quiz logic, distractor generation, geospatial distance calculation, and widget rendering.
+
+| Category | Tests | Focus |
+|----------|-------|-------|
+| Model Parsing | 3 | JSON deserialization, cache/API format safety |
+| Localization | 6 | Translation lookup, key parity, fallbacks |
+| Quiz Logic | 7 | Scoring, streaks, timer clamping, feedback |
+| Distractor Generation | 7 | Option uniqueness, correct answer inclusion |
+| Distance Calculation | 5 | Haversine accuracy, thresholds, edge cases |
+| Widget Rendering | 2 | UI component presence, empty states |
+
+```bash
+flutter test 
+```
 ---
 
 ## What I Learned
