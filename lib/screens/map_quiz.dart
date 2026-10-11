@@ -3,6 +3,7 @@ import 'package:countries_api/core/theme/app_theme.dart';
 import 'package:countries_api/models/country.dart';
 import 'package:countries_api/providers/locale_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
@@ -136,7 +137,7 @@ class _MapQuizScreenState extends ConsumerState<MapQuizScreen> {
     final tr = ref.watch(trProvider);
     final actualLatLng = LatLng(targetCountry.lat, targetCountry.lng);
     final isCorrect = distanceKm <= 800 && distanceKm != 99999;
-
+    final cartoApiKey = dotenv.env['CARTO_API_KEY'] ?? '';
     return Scaffold(
       appBar: AppBar(
         title: Text('${tr('question')} ${questionIndex + 1}/5'),
@@ -180,8 +181,7 @@ class _MapQuizScreenState extends ConsumerState<MapQuizScreen> {
                   ),
                   children: [
                     TileLayer(
-                      urlTemplate: 'https://basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png?key=cb1_4ega_1_9823058b108f5ff74955a38c',
-                      subdomains: ['a' , 'b' , 'c' , 'd'],
+                      urlTemplate: 'https://basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png?key=$cartoApiKey',
                       userAgentPackageName: 'com.example.countries_api',
                     ),
                     if (tappedLocation != null)
