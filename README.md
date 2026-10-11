@@ -14,11 +14,11 @@
 
 | Home | Detail | Quiz Config | Map Quiz |
 |---|---|---|---|
-| *screenshot* | *screenshot* | *screenshot* | *screenshot* |
+| *<img width="250" height="300" alt="worldquiz" src="https://github.com/user-attachments/assets/c04e5e50-7e32-4feb-955f-a8b97f6e8be2" />* | *<img width="250" height="300" alt="detail" src="https://github.com/user-attachments/assets/c775fe3b-9a71-4b95-81b0-f740430a4e58" />* | *<img width="250" height="300" alt="config" src="https://github.com/user-attachments/assets/379ee3f2-c839-4f79-a44d-83e6f7e8e087" />* | *<img width="250" height="300" alt="map" src="https://github.com/user-attachments/assets/224a3a69-e2de-4eeb-ab53-149d8474c0a6" />* |
 
-| Standard Quiz | Result | Dark Theme | Arabic RTL |
+| Standard Quiz | Result |
 |---|---|---|---|
-| *screenshot* | *screenshot* | *screenshot* | *screenshot* |
+| *<img width="250" height="300" alt="standard" src="https://github.com/user-attachments/assets/6844af81-9ac2-4aa4-a19a-01a70bc16730" />* | *<img width="250" height="300" alt="res" src="https://github.com/user-attachments/assets/282d2b32-ad4a-4469-8095-0c7aad5f97a8" />* | 
 
 ---
 
