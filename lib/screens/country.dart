@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:countries_api/providers/country.dart';
 import 'package:countries_api/providers/locale_provider.dart';
 import 'package:countries_api/screens/country_detail.dart';
@@ -110,13 +111,13 @@ class _CountryScreenState extends ConsumerState<CountryScreen> {
                       onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => CountryDetailScreen(country: country))),
                       leading: ClipRRect(
                         borderRadius: BorderRadius.circular(8),
-                        child: Image.network(
-                          country.flagUrl,
+                        child: CachedNetworkImage(
+                          imageUrl: country.flagUrl,
                           width: 50,
                           height: 35,
                           fit: BoxFit.cover,
-                          errorBuilder: (_, __, ___) => const Icon(Icons.flag),
-                        ),
+                          errorWidget: (context, url, error) => const Icon(Icons.flag),
+                        )
                       ),
                       title: Text(country.name, style: const TextStyle(fontWeight: FontWeight.w600)),
                       trailing: Icon(Icons.chevron_right, color: textColor.withOpacity(0.5)),

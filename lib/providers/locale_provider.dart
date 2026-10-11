@@ -18,14 +18,17 @@ const Map<String, Map<String, String>> translations = {
     'easy': 'Easy',
     'medium': 'Medium',
     'hard': 'Hard',
+    'map': 'Map',
     'start_quiz': 'START QUIZ',
     'play_again': 'PLAY AGAIN',
     'back_to_home': 'Back to Home',
-    'genius': 'Genius! 🧠',
-    'good_job': 'Good Job! 👍',
-    'keep_practicing': 'Keep Practicing! 💪',
+    'genius': 'Genius!',
+    'good_job': 'Good Job!',
+    'keep_practicing': 'Keep Practicing!',
     'max_streak': 'Max Streak',
-    "error": "Failed to load countries"
+    "error": "Failed to load countries",
+    "question" : "Question",
+    "time_up" : "Time's Up!",
   },
   'ar': {
     'app_title': 'كويز العالم',
@@ -41,14 +44,17 @@ const Map<String, Map<String, String>> translations = {
     'easy': 'سهل',
     'medium': 'متوسط',
     'hard': 'صعب',
+    'map': 'خريطة',
     'start_quiz': 'ابدأ الاختبار',
     'play_again': 'العب مرة أخرى',
     'back_to_home': 'العودة للرئيسية',
-    'genius': 'عبقري! 🧠',
-    'good_job': 'عمل رائع! 👍',
-    'keep_practicing': 'استمر في التدريب! 💪',
+    'genius': 'عبقري!',
+    'good_job': 'عمل رائع!',
+    'keep_practicing': 'استمر في التدريب!',
     'max_streak': 'أعلى سلسلة',
-    "error": "خطأ في تحميل البلدان"
+    "error": "خطأ في تحميل البلدان",
+    "question" : "سؤال",
+    "time_up" : "انتهى الوقت"
   },
 };
 

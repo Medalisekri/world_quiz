@@ -3,7 +3,6 @@ import 'package:countries_api/screens/country.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../providers/locale_provider.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
@@ -20,8 +19,6 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       }
     });
 
-    final state = ref.watch(countryProvider);
-    final tr = ref.watch(trProvider);
     return Scaffold(
       body: Center(
         child: Column(
@@ -30,17 +27,14 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
             ClipRRect(
               borderRadius: BorderRadius.circular(24),
               child: Image.asset(
-                'lib/core/assets/images/earth.jpg',
-                width: 180,
-                height: 180,
+                'lib/core/assets/images/earth.png',
+                width: 130,
+                height: 130,
                 fit: BoxFit.cover,
                 errorBuilder: (_, __, ___) => const Icon(Icons.public, size: 100, color: Colors.blueAccent),
               ),
             ),
             const SizedBox(height: 32),
-            if (state.hasError)
-              Text(tr('error'), style: TextStyle(color: Theme.of(context).colorScheme.error))
-            else
               CircularProgressIndicator(color: Theme.of(context).colorScheme.primary),
           ],
         ),

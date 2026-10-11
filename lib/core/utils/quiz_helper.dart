@@ -25,7 +25,6 @@ List<QuizQuestions> generateQuestions(
       questionType = 'capital';
       break;
     case 'hard':
-
       questionType = Random().nextBool() ? 'population' : 'language';
       break;
     default:

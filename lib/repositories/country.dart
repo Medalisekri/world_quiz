@@ -1,7 +1,8 @@
 
-import 'package:countries_api/models/country.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+
 class CountryRepository  {
   final Dio _dio = Dio(BaseOptions(
       baseUrl: 'https://api.restcountries.com/countries/v5',
@@ -11,11 +12,11 @@ class CountryRepository  {
       }
   ));
 
-  Future<List<Country>> fetchAllCountries() async {
+  Future<List<Map<String, dynamic>>> fetchAllCountries() async {
     try {
       const int limit = 100;
       int offset = 0;
-      final List<Country> countries = [];
+      final List<Map<String , dynamic>> countries = [];
       const excluded = {
         'Northern Cyprus',
         'Abkhazia',
@@ -33,13 +34,7 @@ class CountryRepository  {
         rawData.removeWhere(
               (country) => excluded.contains(country['names']['common']),
         );
-        for (final item in rawData) {
-          try {
-            countries.add(Country.fromJson(item as Map<String, dynamic>));
-          } catch (e) {
-            throw Exception('Something went wrong: $e ');
-          }
-        }
+        countries.addAll(rawData.cast<Map<String , dynamic>>());
         final meta = response.data['data']['meta'];
         final bool hasMore = meta['more'] as bool;
         if (!hasMore) break;

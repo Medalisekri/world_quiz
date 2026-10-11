@@ -1,6 +1,5 @@
 import 'package:countries_api/models/country.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hive/hive.dart';
 import '../repositories/cache.dart';
 import '../repositories/country.dart';
 
@@ -16,21 +15,19 @@ class CountryNotifier extends AsyncNotifier<List<Country>> {
   }
 
   Future<List<Country>> _loadCountries() async {
-    final cachedData = await _cache.getCachedCountries();
-    if (cachedData != null) {
-      try{
-      return cachedData.map((e) => Country.fromJson(e)).toList();
-    }catch (parseError) {
-        final box = Hive.box('countries_box');
-        await box.clear();
-      }}
+    try {
+      final cachedData = await _cache.getCachedCountries();
+      if (cachedData != null && cachedData.isNotEmpty) {
+          final parsedCountries = cachedData.map((e) => Country.fromJson(e)).toList();
+          return parsedCountries;
+      }
 
-    final countries = await _repository.fetchAllCountries();
-
-    final rawDataForCache = countries.map((c) => c.toJson()).toList();
-    await _cache.saveCountries(rawDataForCache);
-
-    return countries;
+      final countries = await _repository.fetchAllCountries();
+      await _cache.saveCountries(countries);
+      return countries.map((c)=>Country.fromJson(c)).toList();
+    } catch (e) {
+      throw Exception(e);
+    }
   }
 
 }

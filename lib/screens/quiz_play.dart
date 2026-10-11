@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:countries_api/core/theme/app_theme.dart';
 import 'package:countries_api/providers/quiz.dart';
 import 'package:countries_api/screens/quiz_result.dart';
@@ -33,7 +34,6 @@ class _QuizPlayScreenState extends ConsumerState<QuizPlayScreen> with SingleTick
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(quizProvider);
-
     ref.listen<QuizState>(quizProvider, (prev, next) {
       if (next.isFinished == true) {
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) =>  QuizResultScreen()));
@@ -72,7 +72,7 @@ class _QuizPlayScreenState extends ConsumerState<QuizPlayScreen> with SingleTick
       ),
       body: Column(
         children: [
-          // Smooth Timer Bar
+
           Builder(
             builder: (context) {
               final percentage = state.timeLeft / 12.0;
@@ -94,25 +94,47 @@ class _QuizPlayScreenState extends ConsumerState<QuizPlayScreen> with SingleTick
               );
             },
           ),
+
           LinearProgressIndicator(value: progress, backgroundColor: Colors.transparent, color: AppTheme.neonGreen, minHeight: 2),
+
 
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(24.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 300),
-                    child: isFlag
-                        ? Image.network(currentQ.question, key: ValueKey(currentQ.question), height: 200, errorBuilder: (_, __, ___) => const Icon(Icons.flag, size: 80))
-                        : Text(currentQ.question, key: ValueKey(currentQ.question), style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.blueAccent), textAlign: TextAlign.center),
-                  ),
-                  const SizedBox(height: 48),
-                  ...currentQ.options.map((option) {
-                    return _buildOptionButton(context, option, currentQ.correctAnswer, state.answered, state.selectedAnswer);
-                  }),
-                ],
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 20),
+                    Builder(
+                      builder: (context) {
+
+
+                       return AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 400),
+                          transitionBuilder: (Widget child, Animation<double> animation) {
+                            return FadeTransition(
+                              opacity: animation,
+                              child: SlideTransition(
+                                position: Tween<Offset>(begin: const Offset(0.2, 0), end: Offset.zero).animate(animation),
+                                child: child,
+                              ),
+                            );
+                          },
+                          child: isFlag
+                              ? CachedNetworkImage( imageUrl: currentQ.question, key: ValueKey(currentQ.question), height: 200,errorWidget: (context, url, error) => const Icon(Icons.flag),)
+                              : Text(currentQ.question, key: ValueKey(currentQ.question), style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.blueAccent), textAlign: TextAlign.center),
+                        );
+                        }
+                    ),
+                    const SizedBox(height: 48),
+
+                    // options
+                    ...currentQ.options.map((option) {
+                      return _buildOptionButton(context, option, currentQ.correctAnswer, state.answered, state.selectedAnswer);
+                    }),
+                  ],
+                ),
               ),
             ),
           ),

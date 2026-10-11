@@ -15,8 +15,6 @@ Future<void> main() async {
   runApp(const ProviderScope(child: App()));
 }
 
-
-
   class App extends ConsumerWidget {
   const App({super.key});
 

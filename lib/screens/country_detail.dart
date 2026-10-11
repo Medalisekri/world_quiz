@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:countries_api/models/country.dart';
 import 'package:countries_api/providers/locale_provider.dart';
 import 'package:flutter/material.dart';
@@ -19,11 +20,11 @@ class CountryDetailScreen extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Image.network(
-              country!.flagUrl,
-              height: 220,
+            CachedNetworkImage(
+              imageUrl: country!.flagUrl,
+              height: 230,
               fit: BoxFit.cover,
-              errorBuilder: (_, __, ___) => Container(height: 220, color: surfaceColor, child: const Icon(Icons.flag, size: 80)),
+              errorWidget: (context, url, error) => const Icon(Icons.flag),
             ),
             Padding(
               padding: const EdgeInsets.all(24.0),

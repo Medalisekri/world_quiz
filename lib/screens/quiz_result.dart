@@ -44,13 +44,13 @@ class _QuizResultScreenState extends ConsumerState<QuizResultScreen> {
     String message;
     Color accentColor;
     if (percentage >= 80) {
-      message = tr("genius! 🧠");
+      message = tr("genius");
       accentColor = AppTheme.neonGreen;
     } else if (percentage >= 50) {
-      message = tr("good_job! 👍");
+      message = tr("good_job");
       accentColor = AppTheme.neonBlue;
     } else {
-      message = tr("keep_practicing! 💪");
+      message = tr("keep_practicing");
       accentColor = AppTheme.neonRed;
     }
 
