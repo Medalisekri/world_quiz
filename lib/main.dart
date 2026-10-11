@@ -1,5 +1,5 @@
 import 'package:countries_api/core/theme/app_theme.dart';
-import 'package:countries_api/providers/locale_provider.dart';
+import 'package:countries_api/providers/locale.dart';
 import 'package:countries_api/providers/theme.dart';
 import 'package:countries_api/repositories/cache.dart';
 import 'package:countries_api/screens/splash.dart';

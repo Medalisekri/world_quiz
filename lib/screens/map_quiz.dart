@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:countries_api/core/theme/app_theme.dart';
 import 'package:countries_api/models/country.dart';
-import 'package:countries_api/providers/locale_provider.dart';
+import 'package:countries_api/providers/locale.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_map/flutter_map.dart';

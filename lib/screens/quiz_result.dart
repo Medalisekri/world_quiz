@@ -5,7 +5,7 @@ import 'package:countries_api/screens/quiz_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../providers/locale_provider.dart';
+import '../providers/locale.dart';
 
 class QuizResultScreen extends ConsumerStatefulWidget {
   const QuizResultScreen({super.key});

@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:countries_api/providers/country.dart';
-import 'package:countries_api/providers/locale_provider.dart';
+import 'package:countries_api/providers/locale.dart';
 import 'package:countries_api/screens/country_detail.dart';
 import 'package:countries_api/screens/quiz_config.dart';
 import 'package:flutter/material.dart';
