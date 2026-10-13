@@ -65,7 +65,6 @@ class QuizProvider extends StateNotifier<QuizState> {
   QuizProvider() : super(QuizState());
 
   Timer? _timer;
-  final _cache = CacheRepository();
 
   void startQuiz(List<Country> countries, String difficulty, String continent) {
     state = QuizState();
