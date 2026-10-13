@@ -26,19 +26,7 @@ class _CountryScreenState extends ConsumerState<CountryScreen> {
     final surfaceColor = Theme.of(context).colorScheme.surface;
     final textColor = Theme.of(context).colorScheme.onSurface;
 
-    if (countriesState.isLoading) {
-      return Scaffold(body: Center(child: CircularProgressIndicator(color: primaryColor)));
-    }
-
-    if (countriesState.hasError) {
-      return Scaffold(
-        appBar: AppBar(title: Text(tr('app_title'))),
-        body: Center(
-          child: Text(countriesState.error.toString(), style: TextStyle(color: Theme.of(context).colorScheme.error, fontSize: 18)),
-        ),
-      );
-    }
-
+  
     final countries = countriesState.value ?? [];
     final continents = ['All', ...countries.map((c) => c.continent).toSet()];
     final filtered = selectedContinent == 'All' ? countries : countries.where((c) => c.continent == selectedContinent).toList();
